@@ -1,6 +1,8 @@
 package net.kemitix.camel.trello;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;
 import org.apache.camel.Producer;
@@ -13,10 +15,11 @@ import org.apache.camel.spi.UriPath;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Trello component which does bla bla.
- *
- * TODO: Update one line description above what the component does.
+ * Trello component which provides access to cards on
+ * <a href="https://trello.com/">Trello</a>.
  */
+@Setter
+@Getter
 @UriEndpoint(
         firstVersion = "0.1.0",
         scheme = "trello",
@@ -29,8 +32,20 @@ import java.util.concurrent.ExecutorService;
 public class TrelloEndpoint extends DefaultEndpoint {
     @UriPath @Metadata(required = true)
     private String name;
-    @UriParam(defaultValue = "10")
-    private int option = 10;
+    @UriParam(secret = true)
+    private String apiKey;
+    @UriParam(secret = true)
+    private String apiSecret;
+    @UriParam(description = "The action to perform with Trello")
+    private Action action;
+    @UriParam(description = "The time in milliseconds between polling")
+    private long period;
+    @UriParam(description = "The name of a Trello board")
+    private String boardName;
+    @UriParam(description = "The name of a list on the Trello board")
+    private String listName;
+    @UriParam(description = "How to group cards into message(s)")
+    private CardChunk cardChunk;
 
     public TrelloEndpoint(
             String uri,
@@ -51,28 +66,6 @@ public class TrelloEndpoint extends DefaultEndpoint {
         return consumer;
     }
 
-    /**
-     * Some description of this option, and what it does
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Some description of this option, and what it does
-     */
-    public void setOption(int option) {
-        this.option = option;
-    }
-
-    public int getOption() {
-        return option;
-    }
-
     public ExecutorService createExecutor() {
         // TODO: Delete me when you implementy your custom component
         return getCamelContext()
@@ -80,5 +73,14 @@ public class TrelloEndpoint extends DefaultEndpoint {
                 .newSingleThreadExecutor(
                         this,
                         "TrelloConsumer");
+    }
+
+    public enum Action {
+        POLL_LIST // periodically polls a list for all cards
+    }
+
+    private enum CardChunk {
+        LIST_CARD, // return cards as List<Card>
+        CARD  // return each card in its own message
     }
 }
