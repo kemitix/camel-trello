@@ -24,6 +24,7 @@
     <tiles-maven-plugin.version>2.17</tiles-maven-plugin.version>
     <kemitix-tiles.version>2.10.0</kemitix-tiles.version>
     <lombok.version>1.18.12</lombok.version>
+    <trello-java-wrapper.version>0.14</trello-java-wrapper.version>
   </properties>
 
   <dependencyManagement>
@@ -53,6 +54,13 @@
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
       <optional>true</optional>
+    </dependency>
+
+    <!-- trello -->
+    <dependency>
+      <groupId>com.taskadapter</groupId>
+      <artifactId>trello-java-wrapper</artifactId>
+      <version>${trello-java-wrapper.version}</version>
     </dependency>
 
     <!-- logging -->
