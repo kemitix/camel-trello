@@ -37,7 +37,7 @@ public class TrelloEndpoint extends DefaultEndpoint {
     @UriParam(secret = true)
     private String apiSecret;
     @UriParam(description = "The action to perform with Trello")
-    private Action action;
+    private TrelloAction action;
     @UriParam(description = "The name of a Trello board")
     private String boardName;
     @UriParam(description = "The name of a list on the Trello board")
@@ -71,10 +71,6 @@ public class TrelloEndpoint extends DefaultEndpoint {
                 .newSingleThreadExecutor(
                         this,
                         "TrelloConsumer");
-    }
-
-    public enum Action {
-        POLL_LIST // periodically polls a list for all cards
     }
 
     private enum CardChunk {
