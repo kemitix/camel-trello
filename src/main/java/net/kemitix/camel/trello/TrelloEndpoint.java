@@ -29,26 +29,17 @@ import java.util.concurrent.ExecutorService;
 )
 @NoArgsConstructor
 public class TrelloEndpoint extends DefaultEndpoint {
-    @UriPath(description = "Name of the endpoint") @Metadata(required = true)
-    private String name;
-    @UriParam(secret = true, description = "The Trello API Key")
-    private String apiKey;
-    @UriParam(secret = true, description = "The Trello Secret Key")
-    private String apiSecret;
-    @UriParam(description = "The action to perform with Trello")
-    private TrelloAction action;
-    @UriParam(description = "The name of a Trello board")
-    private String boardName;
-    @UriParam(description = "The name of a list on the Trello board")
-    private String listName;
-    @UriParam(description = "How to group cards into message(s)")
-    private CardChunk cardChunk;
+
+    @UriParam
+    private TrelloConfiguration trelloConfiguration;
 
     public TrelloEndpoint(
             String uri,
-            TrelloComponent component
+            TrelloComponent component,
+            TrelloConfiguration trelloConfiguration
     ) {
         super(uri, component);
+        this.trelloConfiguration = trelloConfiguration;
     }
 
     public Producer createProducer() throws Exception {
@@ -58,7 +49,7 @@ public class TrelloEndpoint extends DefaultEndpoint {
     public Consumer createConsumer(
             Processor processor
     ) throws Exception {
-        Consumer consumer = action.createConsumer(this, processor);
+        Consumer consumer = trelloConfiguration.getAction().createConsumer(this, processor);
         configureConsumer(consumer);
         return consumer;
     }
@@ -70,10 +61,5 @@ public class TrelloEndpoint extends DefaultEndpoint {
                 .newSingleThreadExecutor(
                         this,
                         "TrelloConsumer");
-    }
-
-    public enum CardChunk {
-        LIST_CARD, // return cards as List<Card>
-        CARD  // return each card in its own message
     }
 }
