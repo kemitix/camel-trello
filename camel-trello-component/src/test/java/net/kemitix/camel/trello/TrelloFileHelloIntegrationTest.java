@@ -28,26 +28,22 @@ public class TrelloFileHelloIntegrationTest extends AbstractTrelloTestSupport {
     private static final Logger LOG = LoggerFactory.getLogger(TrelloFileHelloIntegrationTest.class);
     private static final String PATH_PREFIX = TrelloApiCollection.getCollection().getApiName(TrelloFileHelloApiMethod.class).getName();
 
-    // TODO provide parameter values for greetMe
-    @Disabled
     @Test
     public void testGreetMe() throws Exception {
         // using String message body for single parameter "name"
-        final String result = template().requestBody("direct://GREETME", null, String.class);
+        final String result = template().requestBody("direct://GREETME", "Bob", String.class);
 
         assertNotNull(result, "greetMe result");
         LOG.debug("greetMe: " + result);
     }
 
-    // TODO provide parameter values for greetUs
-    @Disabled
     @Test
     public void testGreetUs() throws Exception {
         final Map<String, Object> headers = new HashMap<String, Object>();
         // parameter type is String
-        headers.put("CamelTrello.name1", null);
+        headers.put("CamelTrello.name1", "Bob");
         // parameter type is String
-        headers.put("CamelTrello.name2", null);
+        headers.put("CamelTrello.name2", "Alice");
 
         final String result = template().requestBodyAndHeaders("direct://GREETUS", null, headers, String.class);
 
@@ -55,7 +51,6 @@ public class TrelloFileHelloIntegrationTest extends AbstractTrelloTestSupport {
         LOG.debug("greetUs: " + result);
     }
 
-    @Disabled
     @Test
     public void testSayHi() throws Exception {
         final String result = template().requestBody("direct://SAYHI", null, String.class);
