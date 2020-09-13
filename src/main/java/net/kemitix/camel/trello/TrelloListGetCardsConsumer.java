@@ -7,7 +7,7 @@ import org.apache.camel.support.DefaultConsumer;
 
 import java.util.concurrent.ExecutorService;
 
-public class TrelloListGetCardsConsumer extends DefaultConsumer {
+public class TrelloListGetCardsConsumer extends DefaultConsumer implements TrelloConsumer {
     private final TrelloEndpoint endpoint;
     private final EventBusHelper eventBusHelper;
 

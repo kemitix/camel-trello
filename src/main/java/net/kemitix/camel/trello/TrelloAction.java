@@ -16,12 +16,12 @@ public enum TrelloAction {
 
     private final String name;
     private final String docsUri;
-    private final BiFunction<TrelloEndpoint, Processor, TrelloListGetCardsConsumer> creator;
+    private final BiFunction<TrelloEndpoint, Processor, TrelloConsumer> creator;
 
     TrelloAction(
             String name,
             String docsUri,
-            BiFunction<TrelloEndpoint, Processor, TrelloListGetCardsConsumer> creator
+            BiFunction<TrelloEndpoint, Processor, TrelloConsumer> creator
             ) {
         this.name = name;
         this.docsUri = docsUri;
