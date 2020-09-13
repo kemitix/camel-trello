@@ -33,7 +33,7 @@ public class TrelloFileHelloIntegrationTest extends AbstractTrelloTestSupport {
     @Test
     public void testGreetMe() throws Exception {
         // using String message body for single parameter "name"
-        final String result = requestBody("direct://GREETME", null);
+        final String result = template().requestBody("direct://GREETME", null, String.class);
 
         assertNotNull(result, "greetMe result");
         LOG.debug("greetMe: " + result);
@@ -49,7 +49,7 @@ public class TrelloFileHelloIntegrationTest extends AbstractTrelloTestSupport {
         // parameter type is String
         headers.put("CamelTrello.name2", null);
 
-        final String result = requestBodyAndHeaders("direct://GREETUS", null, headers);
+        final String result = template().requestBodyAndHeaders("direct://GREETUS", null, headers, String.class);
 
         assertNotNull(result, "greetUs result");
         LOG.debug("greetUs: " + result);
@@ -58,7 +58,7 @@ public class TrelloFileHelloIntegrationTest extends AbstractTrelloTestSupport {
     @Disabled
     @Test
     public void testSayHi() throws Exception {
-        final String result = requestBody("direct://SAYHI", null);
+        final String result = template().requestBody("direct://SAYHI", null, String.class);
 
         assertNotNull(result, "sayHi result");
         LOG.debug("sayHi: " + result);
