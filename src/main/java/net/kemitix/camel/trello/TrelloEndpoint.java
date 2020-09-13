@@ -24,9 +24,7 @@ import java.util.concurrent.ExecutorService;
         firstVersion = "0.1.0",
         scheme = "trello",
         title = "Trello",
-        syntax="trello:name",
-        consumerClass = TrelloConsumer.class,
-        label = "custom"
+        syntax="trello:name"
 )
 @NoArgsConstructor
 public class TrelloEndpoint extends DefaultEndpoint {
