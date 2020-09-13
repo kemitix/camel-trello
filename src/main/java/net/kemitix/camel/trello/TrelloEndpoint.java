@@ -57,7 +57,7 @@ public class TrelloEndpoint extends DefaultEndpoint {
     public Consumer createConsumer(
             Processor processor
     ) throws Exception {
-        Consumer consumer = new TrelloConsumer(this, processor);
+        Consumer consumer = action.createConsumer(this, processor);
         configureConsumer(consumer);
         return consumer;
     }
