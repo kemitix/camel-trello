@@ -24,15 +24,16 @@ import java.util.concurrent.ExecutorService;
         firstVersion = "0.1.0",
         scheme = "trello",
         title = "Trello",
-        syntax="trello:name"
+        syntax="trello:name",
+        label = "custom"
 )
 @NoArgsConstructor
 public class TrelloEndpoint extends DefaultEndpoint {
-    @UriPath @Metadata(required = true)
+    @UriPath(description = "Name of the endpoint") @Metadata(required = true)
     private String name;
-    @UriParam(secret = true)
+    @UriParam(secret = true, description = "The Trello API Key")
     private String apiKey;
-    @UriParam(secret = true)
+    @UriParam(secret = true, description = "The Trello Secret Key")
     private String apiSecret;
     @UriParam(description = "The action to perform with Trello")
     private TrelloAction action;
@@ -71,7 +72,7 @@ public class TrelloEndpoint extends DefaultEndpoint {
                         "TrelloConsumer");
     }
 
-    private enum CardChunk {
+    public enum CardChunk {
         LIST_CARD, // return cards as List<Card>
         CARD  // return each card in its own message
     }

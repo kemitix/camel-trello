@@ -19,17 +19,27 @@ public class TrelloEndpointConfigurer extends PropertyConfigurerSupport implemen
     public boolean configure(CamelContext camelContext, Object obj, String name, Object value, boolean ignoreCase) {
         TrelloEndpoint target = (TrelloEndpoint) obj;
         switch (ignoreCase ? name.toLowerCase() : name) {
+        case "action": target.setAction(property(camelContext, net.kemitix.camel.trello.TrelloAction.class, value)); return true;
+        case "apikey":
+        case "apiKey": target.setApiKey(property(camelContext, java.lang.String.class, value)); return true;
+        case "apisecret":
+        case "apiSecret": target.setApiSecret(property(camelContext, java.lang.String.class, value)); return true;
         case "basicpropertybinding":
         case "basicPropertyBinding": target.setBasicPropertyBinding(property(camelContext, boolean.class, value)); return true;
+        case "boardname":
+        case "boardName": target.setBoardName(property(camelContext, java.lang.String.class, value)); return true;
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": target.setBridgeErrorHandler(property(camelContext, boolean.class, value)); return true;
+        case "cardchunk":
+        case "cardChunk": target.setCardChunk(property(camelContext, net.kemitix.camel.trello.TrelloEndpoint.CardChunk.class, value)); return true;
         case "exceptionhandler":
         case "exceptionHandler": target.setExceptionHandler(property(camelContext, org.apache.camel.spi.ExceptionHandler.class, value)); return true;
         case "exchangepattern":
         case "exchangePattern": target.setExchangePattern(property(camelContext, org.apache.camel.ExchangePattern.class, value)); return true;
         case "lazystartproducer":
         case "lazyStartProducer": target.setLazyStartProducer(property(camelContext, boolean.class, value)); return true;
-        case "option": target.setOption(property(camelContext, int.class, value)); return true;
+        case "listname":
+        case "listName": target.setListName(property(camelContext, java.lang.String.class, value)); return true;
         case "synchronous": target.setSynchronous(property(camelContext, boolean.class, value)); return true;
         default: return false;
         }
@@ -38,12 +48,17 @@ public class TrelloEndpointConfigurer extends PropertyConfigurerSupport implemen
     @Override
     public Map<String, Object> getAllOptions(Object target) {
         Map<String, Object> answer = new CaseInsensitiveMap();
+        answer.put("action", net.kemitix.camel.trello.TrelloAction.class);
+        answer.put("apiKey", java.lang.String.class);
+        answer.put("apiSecret", java.lang.String.class);
         answer.put("basicPropertyBinding", boolean.class);
+        answer.put("boardName", java.lang.String.class);
         answer.put("bridgeErrorHandler", boolean.class);
+        answer.put("cardChunk", net.kemitix.camel.trello.TrelloEndpoint.CardChunk.class);
         answer.put("exceptionHandler", org.apache.camel.spi.ExceptionHandler.class);
         answer.put("exchangePattern", org.apache.camel.ExchangePattern.class);
         answer.put("lazyStartProducer", boolean.class);
-        answer.put("option", int.class);
+        answer.put("listName", java.lang.String.class);
         answer.put("synchronous", boolean.class);
         return answer;
     }
@@ -52,17 +67,27 @@ public class TrelloEndpointConfigurer extends PropertyConfigurerSupport implemen
     public Object getOptionValue(Object obj, String name, boolean ignoreCase) {
         TrelloEndpoint target = (TrelloEndpoint) obj;
         switch (ignoreCase ? name.toLowerCase() : name) {
+        case "action": return target.getAction();
+        case "apikey":
+        case "apiKey": return target.getApiKey();
+        case "apisecret":
+        case "apiSecret": return target.getApiSecret();
         case "basicpropertybinding":
         case "basicPropertyBinding": return target.isBasicPropertyBinding();
+        case "boardname":
+        case "boardName": return target.getBoardName();
         case "bridgeerrorhandler":
         case "bridgeErrorHandler": return target.isBridgeErrorHandler();
+        case "cardchunk":
+        case "cardChunk": return target.getCardChunk();
         case "exceptionhandler":
         case "exceptionHandler": return target.getExceptionHandler();
         case "exchangepattern":
         case "exchangePattern": return target.getExchangePattern();
         case "lazystartproducer":
         case "lazyStartProducer": return target.isLazyStartProducer();
-        case "option": return target.getOption();
+        case "listname":
+        case "listName": return target.getListName();
         case "synchronous": return target.isSynchronous();
         default: return null;
         }

@@ -25,7 +25,7 @@ public class TrelloListGetCardsConsumer extends DefaultConsumer implements Trell
     @Override
     protected void doStart() throws Exception {
         super.doStart();
-
+        // get trello Client from context - similar to how aws-ses does it
         // start a single threaded pool to monitor events
         executorService = endpoint.createExecutor();
 
