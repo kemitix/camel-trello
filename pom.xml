@@ -23,6 +23,7 @@
 
     <tiles-maven-plugin.version>2.17</tiles-maven-plugin.version>
     <kemitix-tiles.version>2.10.0</kemitix-tiles.version>
+    <lombok.version>1.18.12</lombok.version>
   </properties>
 
   <dependencyManagement>
@@ -45,7 +46,15 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-support</artifactId>
     </dependency>
-    
+
+    <!-- lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <optional>true</optional>
+    </dependency>
+
     <!-- logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
