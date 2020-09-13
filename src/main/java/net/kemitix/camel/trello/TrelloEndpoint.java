@@ -1,5 +1,6 @@
 package net.kemitix.camel.trello;
 
+import lombok.NoArgsConstructor;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;
 import org.apache.camel.Producer;
@@ -24,14 +25,12 @@ import java.util.concurrent.ExecutorService;
         consumerClass = TrelloConsumer.class,
         label = "custom"
 )
+@NoArgsConstructor
 public class TrelloEndpoint extends DefaultEndpoint {
     @UriPath @Metadata(required = true)
     private String name;
     @UriParam(defaultValue = "10")
     private int option = 10;
-
-    public TrelloEndpoint() {
-    }
 
     public TrelloEndpoint(
             String uri,
