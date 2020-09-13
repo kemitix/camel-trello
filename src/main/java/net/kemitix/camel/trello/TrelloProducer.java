@@ -6,7 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TrelloProducer extends DefaultProducer {
-    private static final Logger LOG = LoggerFactory.getLogger(TrelloProducer.class);
+
+    private static final Logger LOG =
+            LoggerFactory.getLogger(
+                    TrelloProducer.class);
+
     private TrelloEndpoint endpoint;
 
     public TrelloProducer(TrelloEndpoint endpoint) {

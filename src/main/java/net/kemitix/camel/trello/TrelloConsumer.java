@@ -13,7 +13,10 @@ public class TrelloConsumer extends DefaultConsumer {
 
     private ExecutorService executorService;
 
-    public TrelloConsumer(TrelloEndpoint endpoint, Processor processor) {
+    public TrelloConsumer(
+            TrelloEndpoint endpoint,
+            Processor processor
+    ) {
         super(endpoint, processor);
         this.endpoint = endpoint;
         eventBusHelper = EventBusHelper.getInstance();
@@ -38,13 +41,17 @@ public class TrelloConsumer extends DefaultConsumer {
         super.doStop();
 
         // shutdown the thread pool gracefully
-        getEndpoint().getCamelContext().getExecutorServiceManager().shutdownGraceful(executorService);
+        getEndpoint()
+                .getCamelContext()
+                .getExecutorServiceManager()
+                .shutdownGraceful(executorService);
     }
 
     private void onEventListener(final Object event) {
         final Exchange exchange = endpoint.createExchange();
 
-        exchange.getIn().setBody("Hello World! The time is " + event);
+        exchange.getIn()
+                .setBody("Hello World! The time is " + event);
 
         try {
             // send message to next processor in the route
@@ -53,7 +60,11 @@ public class TrelloConsumer extends DefaultConsumer {
             exchange.setException(e);
         } finally {
             if (exchange.getException() != null) {
-                getExceptionHandler().handleException("Error processing exchange", exchange, exchange.getException());
+                getExceptionHandler()
+                        .handleException(
+                                "Error processing exchange",
+                                exchange,
+                                exchange.getException());
             }
         }
     }

@@ -16,8 +16,14 @@ import java.util.concurrent.ExecutorService;
  *
  * TODO: Update one line description above what the component does.
  */
-@UriEndpoint(firstVersion = "0.1.0", scheme = "trello", title = "Trello", syntax="trello:name",
-             consumerClass = TrelloConsumer.class, label = "custom")
+@UriEndpoint(
+        firstVersion = "0.1.0",
+        scheme = "trello",
+        title = "Trello",
+        syntax="trello:name",
+        consumerClass = TrelloConsumer.class,
+        label = "custom"
+)
 public class TrelloEndpoint extends DefaultEndpoint {
     @UriPath @Metadata(required = true)
     private String name;
@@ -27,7 +33,10 @@ public class TrelloEndpoint extends DefaultEndpoint {
     public TrelloEndpoint() {
     }
 
-    public TrelloEndpoint(String uri, TrelloComponent component) {
+    public TrelloEndpoint(
+            String uri,
+            TrelloComponent component
+    ) {
         super(uri, component);
     }
 
@@ -35,7 +44,9 @@ public class TrelloEndpoint extends DefaultEndpoint {
         return new TrelloProducer(this);
     }
 
-    public Consumer createConsumer(Processor processor) throws Exception {
+    public Consumer createConsumer(
+            Processor processor
+    ) throws Exception {
         Consumer consumer = new TrelloConsumer(this, processor);
         configureConsumer(consumer);
         return consumer;
@@ -65,6 +76,10 @@ public class TrelloEndpoint extends DefaultEndpoint {
 
     public ExecutorService createExecutor() {
         // TODO: Delete me when you implementy your custom component
-        return getCamelContext().getExecutorServiceManager().newSingleThreadExecutor(this, "TrelloConsumer");
+        return getCamelContext()
+                .getExecutorServiceManager()
+                .newSingleThreadExecutor(
+                        this,
+                        "TrelloConsumer");
     }
 }

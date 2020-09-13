@@ -5,8 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * Used for demonstrations purpose to simulate some external system event bus/broker, where messages are sent to, and
- * this component can consume from.
+ * Used for demonstrations purpose to simulate some external system event
+ * bus/broker, where messages are sent to, and this component can consume from.
  */
 public class EventBusHelper {
 
@@ -34,10 +34,14 @@ public class EventBusHelper {
     @SuppressWarnings("unchecked")
     public <T> void publish(final T event){
         // Notify all subscribers
-        subscribers.forEach(consumer -> publishSingleEvent(event, consumer));
+        subscribers.forEach(consumer ->
+                publishSingleEvent(event, consumer));
     }
 
-    private <T> void publishSingleEvent(final T event, final Consumer<T> subscriber){
+    private <T> void publishSingleEvent(
+            final T event,
+            final Consumer<T> subscriber
+    ){
         subscriber.accept(event);
     }
 
