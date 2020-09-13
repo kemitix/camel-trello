@@ -38,8 +38,6 @@ public class TrelloEndpoint extends DefaultEndpoint {
     private String apiSecret;
     @UriParam(description = "The action to perform with Trello")
     private Action action;
-    @UriParam(description = "The time in milliseconds between polling")
-    private long period;
     @UriParam(description = "The name of a Trello board")
     private String boardName;
     @UriParam(description = "The name of a list on the Trello board")
