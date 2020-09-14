@@ -36,10 +36,10 @@ public class TrelloEndpoint extends DefaultEndpoint {
     public TrelloEndpoint(
             String uri,
             TrelloComponent component,
-            TrelloConfiguration trelloConfiguration
+            TrelloConfiguration configuration
     ) {
         super(uri, component);
-        this.trelloConfiguration = trelloConfiguration;
+        this.trelloConfiguration = configuration;
     }
 
     public Producer createProducer() throws Exception {
@@ -49,7 +49,10 @@ public class TrelloEndpoint extends DefaultEndpoint {
     public Consumer createConsumer(
             Processor processor
     ) throws Exception {
-        Consumer consumer = trelloConfiguration.getAction().createConsumer(this, processor);
+        Consumer consumer =
+                trelloConfiguration
+                        .getAction()
+                        .createConsumer(this, processor);
         configureConsumer(consumer);
         return consumer;
     }

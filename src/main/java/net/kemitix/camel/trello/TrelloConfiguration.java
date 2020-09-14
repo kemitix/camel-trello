@@ -13,26 +13,23 @@ import org.apache.camel.spi.UriPath;
 @UriParams
 public class TrelloConfiguration {
 
+    @UriParam(description = "Trello Client")
     private Trello trello;
 
     @UriPath(description = "Name of the endpoint") @Metadata(required = true)
     private String name;
-    @UriParam(secret = true, description = "The Trello API Key")
-    private String apiKey;
-    @UriParam(secret = true, description = "The Trello Secret Key")
-    private String apiSecret;
     @UriParam(description = "The action to perform with Trello")
     private TrelloAction action;
     @UriParam(description = "The name of a Trello board")
-    private String boardName;
+    private String board;
     @UriParam(description = "The name of a list on the Trello board")
-    private String listName;
+    private String list;
     @UriParam(description = "How to group cards into message(s)")
-    private CardChunk cardChunk;
+    private Grouping grouping;
 
-    public enum CardChunk {
-        LIST_CARD, // return cards as List<Card>
-        CARD  // return each card in its own message
+    public enum Grouping {
+        LIST, // return cards as List<Card>
+        CARD, // return each card in its own message
     }
 
 }

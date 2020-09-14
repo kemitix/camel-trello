@@ -28,9 +28,12 @@ public class TrelloComponentTest extends CamelTestSupport {
     protected RouteBuilder createRouteBuilder() throws Exception {
         return new RouteBuilder() {
             public void configure() {
-                from("trello://foo?action=list_get_cards")
-                  .to("trello://bar")
-                  .to("mock:result");
+                from("direct:start")
+                        .to("trello:test" +
+                                "?action=list_get_cards" +
+                                "&board=TestBoard" +
+                                "&list=TestList")
+                        .to("mock:result");
             }
         };
     }
