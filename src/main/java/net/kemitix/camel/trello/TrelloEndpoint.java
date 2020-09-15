@@ -64,15 +64,6 @@ public class TrelloEndpoint extends DefaultEndpoint {
         return consumer;
     }
 
-    public ExecutorService createExecutor() {
-        // TODO: Delete me when you implementy your custom component
-        return getCamelContext()
-                .getExecutorServiceManager()
-                .newSingleThreadExecutor(
-                        this,
-                        "TrelloConsumer");
-    }
-
     public enum Grouping {
         LIST, // return cards as List<Card>
         CARD, // return each card in its own message
