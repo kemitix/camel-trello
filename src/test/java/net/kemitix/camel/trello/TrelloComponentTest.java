@@ -3,29 +3,47 @@ package net.kemitix.camel.trello;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit5.CamelTestSupport;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
 public class TrelloComponentTest extends CamelTestSupport {
 
-    private final EventBusHelper eventBusHelper = EventBusHelper.getInstance();
+    public static final String BOARD_NAME = "Test Board";
+    public static final String LIST_NAME = "Test List";
+
+    @Mock
+    private TrelloService trelloService;
 
     @Test
     public void testTrello() throws Exception {
         MockEndpoint mock = getMockEndpoint("mock:result");
-        mock.expectedMinimumMessageCount(5);
+        mock.expectedMinimumMessageCount(1);
+        Object body = "";
+        Map<String, Object> headers = new HashMap<>();
+        headers.put(TrelloHeaders.ACTION, TrelloAction.LIST_GET_CARDS);
+        headers.put(TrelloHeaders.BOARD, BOARD_NAME);
+        headers.put(TrelloHeaders.LIST, LIST_NAME);
 
-        // Trigger events to subscribers
-        simulateEventTrigger();
+        template.sendBodyAndHeaders("direct:start", body, headers);
 
         mock.await();
+
+        verify(trelloService).listGetCards(BOARD_NAME, LIST_NAME);
     }
 
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
+        context().getRegistry()
+                .bind("trelloService", TrelloService.class, trelloService);
         return new RouteBuilder() {
             public void configure() {
                 from("direct:start")
@@ -38,16 +56,4 @@ public class TrelloComponentTest extends CamelTestSupport {
         };
     }
 
-    private void simulateEventTrigger() {
-        final TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                final Date now = new Date();
-                // publish events to the event bus
-                eventBusHelper.publish(now);
-            }
-        };
-
-        new Timer().scheduleAtFixedRate(task, 1000L, 1000L);
-    }
 }

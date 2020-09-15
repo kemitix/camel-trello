@@ -1,17 +1,22 @@
 package net.kemitix.camel.trello;
 
+import lombok.Setter;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.RuntimeCamelException;
 import org.apache.camel.support.DefaultConsumer;
 
-import java.util.concurrent.ExecutorService;
+import java.util.List;
 
-public class TrelloListGetCardsConsumer extends DefaultConsumer implements TrelloConsumer {
+public class TrelloListGetCardsConsumer
+        extends DefaultConsumer
+        implements TrelloConsumer {
+
     private final TrelloEndpoint endpoint;
-    private final EventBusHelper eventBusHelper;
+    private final String boardName;
+    private final String listName;
 
-    private ExecutorService executorService;
+    @Setter
+    private TrelloService trelloService;
 
     public TrelloListGetCardsConsumer(
             TrelloEndpoint endpoint,
@@ -19,53 +24,28 @@ public class TrelloListGetCardsConsumer extends DefaultConsumer implements Trell
     ) {
         super(endpoint, processor);
         this.endpoint = endpoint;
-        eventBusHelper = EventBusHelper.getInstance();
+        this.boardName = endpoint.getBoard();
+        this.listName = endpoint.getList();
     }
 
     @Override
     protected void doStart() throws Exception {
         super.doStart();
-        // get trello Client from context - similar to how aws-ses does it
-        // start a single threaded pool to monitor events
-        executorService = endpoint.createExecutor();
-
-        // submit task to the thread pool
-        executorService.submit(() -> {
-            // subscribe to an event
-            eventBusHelper.subscribe(this::onEventListener);
-        });
-    }
-
-    @Override
-    protected void doStop() throws Exception {
-        super.doStop();
-
-        // shutdown the thread pool gracefully
-        getEndpoint()
-                .getCamelContext()
-                .getExecutorServiceManager()
-                .shutdownGraceful(executorService);
-    }
-
-    private void onEventListener(final Object event) {
-        final Exchange exchange = endpoint.createExchange();
-
-        exchange.getIn()
-                .setBody("Hello World! The time is " + event);
-
+        Exchange exchange = endpoint.createExchange();
         try {
-            // send message to next processor in the route
+            List<TrelloCard> trelloCards =
+                    trelloService.listGetCards(boardName, listName);
+            exchange.getIn().setBody(trelloCards);
             getProcessor().process(exchange);
-        } catch (Exception e) {
-            exchange.setException(e);
         } finally {
             if (exchange.getException() != null) {
-                getExceptionHandler()
-                        .handleException(
-                                "Error processing exchange",
-                                exchange,
-                                exchange.getException());
+                getExceptionHandler().handleException(String.format(
+                        "Error getting cards from list '%s' on board '%s'",
+                        listName, boardName),
+                        exchange, exchange.getException());
             }
         }
+
     }
+
 }

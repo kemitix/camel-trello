@@ -28,7 +28,16 @@ public enum TrelloAction {
         this.creator = creator;
     }
 
-    public Consumer createConsumer(TrelloEndpoint endpoint, Processor processor) {
-        return creator.apply(endpoint, processor);
+    public Consumer createConsumer(
+            TrelloEndpoint endpoint,
+            Processor processor,
+            TrelloService trelloService
+    ) {
+        TrelloConsumer consumer = creator.apply(
+                endpoint,
+                processor
+        );
+        consumer.setTrelloService(trelloService);
+        return consumer;
     }
 }

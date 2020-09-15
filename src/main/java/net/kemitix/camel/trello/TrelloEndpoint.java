@@ -30,16 +30,26 @@ import java.util.concurrent.ExecutorService;
 @NoArgsConstructor
 public class TrelloEndpoint extends DefaultEndpoint {
 
-    @UriParam
-    private TrelloConfiguration trelloConfiguration;
+    private TrelloService trelloService;
+
+    @UriPath(description = "Name of the endpoint") @Metadata(required = true)
+    private String name;
+    @UriParam(description = "The action to perform with Trello")
+    private TrelloAction action;
+    @UriParam(description = "The name of a Trello board")
+    private String board;
+    @UriParam(description = "The name of a list on the Trello board")
+    private String list;
+    @UriParam(description = "How to group cards into message(s)")
+    private Grouping grouping;
 
     public TrelloEndpoint(
             String uri,
             TrelloComponent component,
-            TrelloConfiguration configuration
+            TrelloService trelloService
     ) {
         super(uri, component);
-        this.trelloConfiguration = configuration;
+        this.trelloService = trelloService;
     }
 
     public Producer createProducer() throws Exception {
@@ -49,10 +59,7 @@ public class TrelloEndpoint extends DefaultEndpoint {
     public Consumer createConsumer(
             Processor processor
     ) throws Exception {
-        Consumer consumer =
-                trelloConfiguration
-                        .getAction()
-                        .createConsumer(this, processor);
+        Consumer consumer = action.createConsumer(this, processor, trelloService);
         configureConsumer(consumer);
         return consumer;
     }
@@ -65,4 +72,10 @@ public class TrelloEndpoint extends DefaultEndpoint {
                         this,
                         "TrelloConsumer");
     }
+
+    public enum Grouping {
+        LIST, // return cards as List<Card>
+        CARD, // return each card in its own message
+    }
+
 }
