@@ -7,6 +7,7 @@ import org.apache.camel.support.DefaultConsumer;
 
 import java.util.List;
 
+// FIXME: this should be a Producer not a Consumer
 public class TrelloListGetCardsConsumer
         extends DefaultConsumer
         implements TrelloConsumer {
