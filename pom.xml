@@ -25,6 +25,7 @@
     <kemitix-tiles.version>2.10.0</kemitix-tiles.version>
     <lombok.version>1.18.12</lombok.version>
     <trello-java-wrapper.version>0.14</trello-java-wrapper.version>
+    <mockito.version>3.5.10</mockito.version>
   </properties>
 
   <dependencyManagement>
@@ -77,6 +78,13 @@
       <artifactId>camel-test-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
