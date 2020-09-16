@@ -33,7 +33,7 @@ public class ListGetCardsProducer
         return Optional.ofNullable(in.getHeader(TrelloHeaders.BOARD_ID, String.class))
                 .orElseGet(() ->
                         trelloService.lookUpBoardId(
-                                in.getHeader(TrelloHeaders.LIST_NAME, String.class)));
+                                in.getHeader(TrelloHeaders.BOARD_NAME, String.class)));
     }
 
     private String getListId(Message in, String boardId) {

@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,7 +58,21 @@ public class ListGetCardsTest extends CamelTestSupport {
 //        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
 //    }
 
-//    @Test @DisplayName("valid with board name and list id")
+    @Test @DisplayName("valid with board name and list id")
+    public void validNameId() throws Exception {
+        //given
+        MockEndpoint mock = getMockEndpoint("mock:result");
+        mock.expectedMinimumMessageCount(1);
+        headers.put(TrelloHeaders.BOARD_NAME, BOARD_NAME);
+        headers.put(TrelloHeaders.LIST_ID, LIST_ID);
+        given(trelloService.lookUpBoardId(BOARD_NAME)).willReturn(BOARD_ID);
+        //when
+        template.sendBodyAndHeaders("direct:start", body, headers);
+        //then
+        mock.await();
+        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
+    }
+
     @Test @DisplayName("valid with board id and list id")
     public void validIdId() throws Exception {
         //given
