@@ -44,19 +44,20 @@ public class ListGetCardsTest extends CamelTestSupport {
 //        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
 //    }
 
-//    @Test @DisplayName("valid with board id and list name")
-//    public void validIdName() throws Exception {
-//        //given
-//        MockEndpoint mock = getMockEndpoint("mock:result");
-//        mock.expectedMinimumMessageCount(1);
-//        headers.put(TrelloHeaders.BOARD_ID, BOARD_ID);
-//        headers.put(TrelloHeaders.LIST_NAME, LIST_NAME);
-//        //when
-//        template.sendBodyAndHeaders("direct:start", body, headers);
-//        //then
-//        mock.await();
-//        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
-//    }
+    @Test @DisplayName("valid with board id and list name")
+    public void validIdName() throws Exception {
+        //given
+        MockEndpoint mock = getMockEndpoint("mock:result");
+        mock.expectedMinimumMessageCount(1);
+        headers.put(TrelloHeaders.BOARD_ID, BOARD_ID);
+        headers.put(TrelloHeaders.LIST_NAME, LIST_NAME);
+        given(trelloService.lookUpListId(LIST_NAME, BOARD_ID)).willReturn(LIST_ID);
+        //when
+        template.sendBodyAndHeaders("direct:start", body, headers);
+        //then
+        mock.await();
+        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
+    }
 
     @Test @DisplayName("valid with board name and list id")
     public void validNameId() throws Exception {
