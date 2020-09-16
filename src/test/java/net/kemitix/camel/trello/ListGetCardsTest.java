@@ -29,20 +29,22 @@ public class ListGetCardsTest extends CamelTestSupport {
     Object body = "";
     Map<String, Object> headers = new HashMap<>();
 
-//    @Test
-//    @DisplayName("valid with board name and list name")
-//    public void validNameName() throws Exception {
-//        //given
-//        MockEndpoint mock = getMockEndpoint("mock:result");
-//        mock.expectedMinimumMessageCount(1);
-//        headers.put(TrelloHeaders.BOARD_NAME, BOARD_NAME);
-//        headers.put(TrelloHeaders.LIST, LIST_NAME);
-//        //when
-//        template.sendBodyAndHeaders("direct:start", body, headers);
-//        //then
-//        mock.await();
-//        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
-//    }
+    @Test
+    @DisplayName("valid with board name and list name")
+    public void validNameName() throws Exception {
+        //given
+        MockEndpoint mock = getMockEndpoint("mock:result");
+        mock.expectedMinimumMessageCount(1);
+        headers.put(TrelloHeaders.BOARD_NAME, BOARD_NAME);
+        headers.put(TrelloHeaders.LIST_NAME, LIST_NAME);
+        given(trelloService.lookUpBoardId(BOARD_NAME)).willReturn(BOARD_ID);
+        given(trelloService.lookUpListId(LIST_NAME, BOARD_ID)).willReturn(LIST_ID);
+        //when
+        template.sendBodyAndHeaders("direct:start", body, headers);
+        //then
+        mock.await();
+        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
+    }
 
     @Test @DisplayName("valid with board id and list name")
     public void validIdName() throws Exception {
