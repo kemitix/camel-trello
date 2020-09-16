@@ -1,7 +1,6 @@
 package net.kemitix.camel.trello;
 
 import org.apache.camel.Processor;
-import org.apache.camel.Producer;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -13,7 +12,7 @@ public enum TrelloAction {
             "Get Cards in a List",
             "https://developer.atlassian.com/cloud/trello/rest/api-group-lists/#api-lists-id-cards-get",
             null,
-            TrelloListGetCardsProducer::new),
+            ListGetCardsProducer::new),
 
     ;
 

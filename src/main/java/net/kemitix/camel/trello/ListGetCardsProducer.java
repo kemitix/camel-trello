@@ -6,7 +6,7 @@ import org.apache.camel.support.DefaultProducer;
 
 import java.util.List;
 
-public class TrelloListGetCardsProducer
+public class ListGetCardsProducer
         extends DefaultProducer
         implements TrelloProducer {
 
@@ -16,7 +16,7 @@ public class TrelloListGetCardsProducer
     @Setter
     private TrelloService trelloService;
 
-    public TrelloListGetCardsProducer(TrelloEndpoint endpoint) {
+    public ListGetCardsProducer(TrelloEndpoint endpoint) {
         super(endpoint);
         this.boardName = endpoint.getBoard();
         this.listName = endpoint.getList();
