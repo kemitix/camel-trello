@@ -3,7 +3,7 @@ package net.kemitix.camel.trello;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit5.CamelTestSupport;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class TrelloComponentTest extends CamelTestSupport {
+public class ListGetCardsTest extends CamelTestSupport {
 
     public static final String BOARD_NAME = "Test Board";
     public static final String LIST_NAME = "Test List";
@@ -24,6 +24,7 @@ public class TrelloComponentTest extends CamelTestSupport {
     private TrelloService trelloService;
 
     @Test
+    @DisplayName("valid with default grouping")
     public void testTrello() throws Exception {
         MockEndpoint mock = getMockEndpoint("mock:result");
         mock.expectedMinimumMessageCount(1);
