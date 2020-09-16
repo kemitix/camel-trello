@@ -16,6 +16,8 @@ import org.apache.camel.spi.UriParam;
 import org.apache.camel.spi.UriPath;
 import org.apache.camel.support.DefaultProducer;
 
+import java.util.Objects;
+
 /**
  * Trello component which provides access to cards on
  * <a href="https://trello.com/">Trello</a>.
@@ -36,10 +38,13 @@ public class TrelloEndpoint extends DefaultEndpoint {
 
     @UriPath(description = "Name of the endpoint") @Metadata(required = true)
     private String name;
+
     @UriParam(description = "The action to perform with Trello")
     private TrelloAction action;
+
     @UriParam(description = "The name of a Trello board")
     private String board;
+
     @UriParam(description = "The name of a list on the Trello board")
     private String list;
 
@@ -53,13 +58,15 @@ public class TrelloEndpoint extends DefaultEndpoint {
     }
 
     public Producer createProducer() throws Exception {
-        return action.createProducer(this, trelloService)
+        return Objects.requireNonNull(action, "Action not set")
+                .createProducer(this, trelloService)
                 .orElseGet(() -> new EmptyProducer(this));
     }
 
     @Override
     public Consumer createConsumer(Processor processor) throws Exception {
-        return action.createConsumer(this, processor, trelloService)
+        return Objects.requireNonNull(action, "Action not set")
+                .createConsumer(this, processor, trelloService)
                 .orElseGet(() -> new EmptyConsumer(this, processor));
     }
 

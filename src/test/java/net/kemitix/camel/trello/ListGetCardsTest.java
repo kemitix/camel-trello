@@ -17,29 +17,65 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class ListGetCardsTest extends CamelTestSupport {
 
+    public static final String BOARD_ID = "Board Id";
+    public static final String LIST_ID = "List Id";
     public static final String BOARD_NAME = "Test Board";
     public static final String LIST_NAME = "Test List";
 
     @Mock
     private TrelloService trelloService;
 
-    @Test
-    @DisplayName("valid with default grouping")
-    public void testTrello() throws Exception {
+    Object body = "";
+    Map<String, Object> headers = new HashMap<>();
+
+//    @Test
+//    @DisplayName("valid with board name and list name")
+//    public void validNameName() throws Exception {
+//        //given
+//        MockEndpoint mock = getMockEndpoint("mock:result");
+//        mock.expectedMinimumMessageCount(1);
+//        headers.put(TrelloHeaders.BOARD_NAME, BOARD_NAME);
+//        headers.put(TrelloHeaders.LIST, LIST_NAME);
+//        //when
+//        template.sendBodyAndHeaders("direct:start", body, headers);
+//        //then
+//        mock.await();
+//        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
+//    }
+
+//    @Test @DisplayName("valid with board id and list name")
+//    public void validIdName() throws Exception {
+//        //given
+//        MockEndpoint mock = getMockEndpoint("mock:result");
+//        mock.expectedMinimumMessageCount(1);
+//        headers.put(TrelloHeaders.BOARD_ID, BOARD_ID);
+//        headers.put(TrelloHeaders.LIST_NAME, LIST_NAME);
+//        //when
+//        template.sendBodyAndHeaders("direct:start", body, headers);
+//        //then
+//        mock.await();
+//        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
+//    }
+
+//    @Test @DisplayName("valid with board name and list id")
+    @Test @DisplayName("valid with board id and list id")
+    public void validIdId() throws Exception {
+        //given
         MockEndpoint mock = getMockEndpoint("mock:result");
         mock.expectedMinimumMessageCount(1);
-        Object body = "";
-        Map<String, Object> headers = new HashMap<>();
-        headers.put(TrelloHeaders.ACTION, TrelloAction.LIST_GET_CARDS);
-        headers.put(TrelloHeaders.BOARD, BOARD_NAME);
-        headers.put(TrelloHeaders.LIST, LIST_NAME);
-
+        headers.put(TrelloHeaders.BOARD_ID, BOARD_ID);
+        headers.put(TrelloHeaders.LIST_ID, LIST_ID);
+        //when
         template.sendBodyAndHeaders("direct:start", body, headers);
-
+        //then
         mock.await();
-
-        verify(trelloService).listGetCards(BOARD_NAME, LIST_NAME);
+        verify(trelloService).listGetCards(BOARD_ID, LIST_ID);
     }
+
+
+//    @Test @DisplayName("missing board name or id")
+//    @Test @DisplayName("missing list name or id")
+//    @Test @DisplayName("missing board name or id and list name or id")
 
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
@@ -49,9 +85,7 @@ public class ListGetCardsTest extends CamelTestSupport {
             public void configure() {
                 from("direct:start")
                         .to("trello:test" +
-                                "?action=list_get_cards" +
-                                "&board=Test Board" +
-                                "&list=Test List")
+                                "?action=list_get_cards")
                         .to("mock:result");
             }
         };
