@@ -49,8 +49,8 @@ public class TrelloComponentTest extends CamelTestSupport {
                 from("direct:start")
                         .to("trello:test" +
                                 "?action=list_get_cards" +
-                                "&board=TestBoard" +
-                                "&list=TestList")
+                                "&board=Test Board" +
+                                "&list=Test List")
                         .to("mock:result");
             }
         };

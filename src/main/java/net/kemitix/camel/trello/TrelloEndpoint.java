@@ -4,15 +4,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.camel.Consumer;
+import org.apache.camel.Endpoint;
+import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.Producer;
+import org.apache.camel.support.DefaultConsumer;
 import org.apache.camel.support.DefaultEndpoint;
 import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.UriEndpoint;
 import org.apache.camel.spi.UriParam;
 import org.apache.camel.spi.UriPath;
-
-import java.util.concurrent.ExecutorService;
+import org.apache.camel.support.DefaultProducer;
 
 /**
  * Trello component which provides access to cards on
@@ -53,20 +55,50 @@ public class TrelloEndpoint extends DefaultEndpoint {
     }
 
     public Producer createProducer() throws Exception {
-        return new TrelloProducer(this);
+        return action.createProducer(this, trelloService)
+                .orElseGet(() -> new EmptyProducer(this));
     }
 
-    public Consumer createConsumer(
-            Processor processor
-    ) throws Exception {
-        Consumer consumer = action.createConsumer(this, processor, trelloService);
-        configureConsumer(consumer);
-        return consumer;
+    @Override
+    public Consumer createConsumer(Processor processor) throws Exception {
+        return action.createConsumer(this, processor, trelloService)
+                .orElseGet(() -> new EmptyConsumer(this, processor));
     }
 
     public enum Grouping {
         LIST, // return cards as List<Card>
         CARD, // return each card in its own message
+    }
+
+    private static class EmptyProducer extends DefaultProducer implements TrelloProducer {
+        public EmptyProducer() {
+            super(null);
+        }
+
+        public EmptyProducer(Endpoint endpoint) {
+            super(endpoint);
+        }
+
+        @Override
+        public void process(Exchange exchange) throws Exception {
+        }
+
+        @Override
+        public void setTrelloService(TrelloService trelloService) {
+        }
+
+    }
+
+    private static class EmptyConsumer extends DefaultConsumer implements TrelloConsumer {
+
+        public EmptyConsumer(TrelloEndpoint endpoint, Processor processor) {
+            super(endpoint, processor);
+        }
+
+        @Override
+        public void setTrelloService(TrelloService trelloService) {
+        }
+
     }
 
 }
