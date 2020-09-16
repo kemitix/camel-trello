@@ -42,8 +42,6 @@ public class TrelloEndpoint extends DefaultEndpoint {
     private String board;
     @UriParam(description = "The name of a list on the Trello board")
     private String list;
-    @UriParam(description = "How to group cards into message(s)")
-    private Grouping grouping;
 
     public TrelloEndpoint(
             String uri,
@@ -63,11 +61,6 @@ public class TrelloEndpoint extends DefaultEndpoint {
     public Consumer createConsumer(Processor processor) throws Exception {
         return action.createConsumer(this, processor, trelloService)
                 .orElseGet(() -> new EmptyConsumer(this, processor));
-    }
-
-    public enum Grouping {
-        LIST, // return cards as List<Card>
-        CARD, // return each card in its own message
     }
 
     private static class EmptyProducer extends DefaultProducer implements TrelloProducer {
